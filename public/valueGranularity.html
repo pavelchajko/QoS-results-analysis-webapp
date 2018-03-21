@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Data Analaysis Exploration tool" />
+	<meta name="author" content="Pavel Gichevski" />
+
+
+	<script src="js/jquery-3.2.1.js"></script>
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<!-- Font-awesome -->
+	<link rel="stylesheet" href="css/font-awesome.css">
+	
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+ 
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+	<!-- Data table css -->
+	<link rel="stylesheet" href="css/dataTable.css">
+	<!-- Modernizr JS -->
+
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+   
+	</head>
+	<body>
+	<div class="jumbotron">
+				<div class="container">
+				 <h1>Value Granularity</h1> 
+				 <h3 id="dimensionName">Dimension:</h3>
+				 <h4 id="aggregationAttribute">Attribute of aggregation:</h4>
+				 <h4 id="fileNotPresent"></h4>
+				</div>
+	</div>
+	<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+	
+
+		<div id="fh5co-main">
+
+			<div class="fh5co-narrow-content">
+				<div class="row" id = container>
+
+					
+					
+					<div class="col-md-8 col-md-offset-2 animate-box" data-animate-effect="fadeInLeft">
+						
+						<div class="col-md-9 col-md-push-3">
+							
+							
+							
+							<div class="well" id="valueWell">
+								<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+						 		<span>The presented graph groups the set of records according quality scores in the  current dimension.</br> By pressing on each of the groups we can see how the records with high/med/low quality scores in all available dimension measueres. This can help us when formulating another quality analysis by varying settings of this dimension, or modifyung the data object.</span></br>
+						 		The groups were chosen by the following critearia:
+						 		<ul>
+						 			<li id = "low">Low: value  </li>
+						 			<li id = "med">Medium: </li>
+						 			<li id = "high">High: value </li>
+						 		</ul>
+						    </div>
+							
+
+							</br>
+							
+
+							
+							<div class="well" id="valueWell">
+							<p>The table bellow contains all the records that were aggregated accoring the attribute of selection.
+								After filtering by range of values, you can click on a specific record to explore all dimensions quality results specifically to that record.</p>
+							</br>
+							
+								<h5>Filter the table by setting the range of:<p id="rangeSelector"></p></h5>
+								<div id="showData">
+									<table border="0" cellspacing="5" cellpadding="5">
+								        <tbody>
+								        	<tr>
+								            <td>Minimum :</td>
+								            <td><input type="text" id="min" name="min"></td>
+								        </tr>
+								        <tr>
+								            <td>Maximum :</td>
+								            <td><input type="text" id="max" name="max"></td>
+								        </tr>
+								    	</tbody>
+									</table>	
+
+
+
+									</br>
+									</br>
+											<div class="btn-group">
+													<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export Table Data</button>
+													<ul class="dropdown-menu ">
+														<li><a href="#" onclick="$('#example').tableExport({type:'json',escape:'true'});">  JSON</a></li>
+													
+														<li class="divider"></li>
+														<li><a href="#" onclick="$('#example').tableExport({type:'csv',escape:'false'});">  CSV</a></li>
+														<li class="divider"></li>
+														<li><a href="#" onclick="$('#example').tableExport({type:'excel',escape:'false'});">  XLS</a></li>
+														
+													</ul>
+											</div>
+									</br>
+									</br>	
+											
+									<table id="example" class="display table table-striped" cellspacing="0" width="90%" border="1 px">
+										<thead id="thead">
+											<tr id="firstTR"></tr>
+										</thead>
+										<tbody id="tbody">
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row work-pagination animate-box" data-animate-effect="fadeInLeft">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
+
+						<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+							<a href="attributeGranularity.html"><i class="icon-long-arrow-left"></i> <span>Return to Attribute Granularity</span></a>
+						</div>
+						
+					</div>
+				</div>
+				<div class="row work-pagination animate-box" data-animate-effect="fadeInLeft">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
+
+						<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+							<a href="homepage.html"><i class="icon-long-arrow-left"></i> <span>Return to Homepage</span></a>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Carousel -->
+	<script src="js/owl.carousel.min.js"></script>
+	<!-- Stellar -->
+	<script src="js/jquery.stellar.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Counters -->
+	<script src="js/jquery.countTo.js"></script>
+	
+	
+	<!-- MAIN JS -->
+	<!--<script src="js/main.js"></script>-->
+	
+	<script src="js/jquery-table.js"></script>
+	<script src="js/jquery-data.js"></script>
+	<script src="js/valueClass.js"></script>
+	<script  src="js/tableExport.js"></script>
+	<script  src="js/jquery.base64.js"></script>
+	<script src="js/valueGranularity.js"></script>
+	<script src="js/chartsScript.js"></script>
+
+	
+	
+	
+	
+
+
+
+
+	</body>
+</html>
+

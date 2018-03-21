@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Data Analaysis Exploration tool</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Data Analaysis Exploration tool" />
+	<meta name="author" content="Pavel Gichevski" />
+
+  
+  	
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- CHARTS CSS -->
+	<script src="js/jquery.min.js"></script>
+	<link rel="stylesheet" href="css/chart.css">	
+	<script src="js/jquery.chart.js"></script>
+	
+	
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+	<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		
+		
+		<div id="fh5co-main" style="width: 100%">
+
+			<div class="jumbotron">
+				<h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Data Quality <span style="color: red">Global Analysis Results</span></h2>
+				
+			</div>
+
+				
+			<p style="font-size:80%; text-align:center; padding-left:150px; padding-right:150px; text-align:justify;">
+				All the quality dimensions on a global granularity level are compared to a scale. If the dimensions results are low the dimension will be marked <strong style="color: red">red</strong>, otherwise <strong style="color: green">green</strong>.
+				In order to correctly understand the quality results we suggest deep exploration of each quality dimension on attribute, and value level of granularity.</br>
+				</br>
+				Otherwise, you can group the dimensions by category of interest, or a data mining application that will be used further to process the data.
+			</p>
+
+				<div>
+					 <div class="btn-group" style="margin-left: 150px">
+									  <button type="button" class="btn btn-primary dropdown-toggle" id="buttonView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									    Standard <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" id="dropdown-view">
+									    <li class="Standard">Standard</li>
+									    <li class="Category">Category</li>
+									    <li class="Data Mining">Data Mining</li>
+									  </ul>
+				     </div>
+				      <div class="btn-group" style="margin-left: 20px">
+									  <button type="button" class="btn btn-primary dropdown-toggle" id="buttonGroupBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									    Group By <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" id="dropdown-groupBy">
+									    <li class="Clustering">Clustering</li>
+									    <li class="Association">Association</li>
+									    <li class="Time Validity">Time Validity</li>
+										  <li class="Corectness">Correctness</li>
+										  <li class="Completeness">Completeness</li>
+									  </ul>
+				     </div>
+				</div>
+
+			<div class = "fh5co-narrow-content">
+				<div class="row animate-box" data-animate-effect="fadeInLeft" style="border:groove; border-width: 0.5px; border-spacing: 15px">
+
+					<div id="cpmBox">
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+						 	<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="completeness_missing">
+							<div class="chart">
+		        				<div class="donut-chart" id="cpm"></div>
+		      				</div>
+		      				<h3 id = "cm-title" class="fh5co-work-title" style="text-align: center">Completeness missing</h3>
+		      			   </a>
+						</div>
+					</div>
+
+					<div id="cfBox">
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+						  <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="completeness_frequency">
+							<div class="chart">
+		        				<div class="donut-chart" id="cf"  data-title="%"></div>
+		      				</div>
+		      				<h3 id = "cf-title" class="fh5co-work-title" style="text-align: center">Completeness frequency</h3>
+		      			  </a>
+						</div>
+					</div>
+
+					<div id="vBox">
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+						   <a title = "go to Attribute level"  href="attributeGranularity.html" class="dimension" id="volume">
+							<div class="chart">
+		        				<div class="donut-chart" id="v"  data-title="%"></div>
+		      				</div>
+		      				<h3 id = "volume-title" class="fh5co-work-title" style="text-align: center">Volume</h3>
+		      			   </a>
+						</div>
+					</div>
+					
+					<div class="clearfix visible-md-block"></div>
+
+					<div id="precisionBox">
+					<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+						<a title = "go to Attribute level"  href="attributeGranularity.html" class="dimension" id="precision">
+							<div class="chart">
+		        				<div class="donut-chart" id="pr"  data-title="%"></div>
+		      				</div>
+		      				<h3 id = "precision-title" class="fh5co-work-title" style="text-align: center">Precision</h3>
+		      			</a>
+					</div>	
+					</div>
+
+					<div id="timelinessBox">
+					<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+						<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="timeliness">
+							<div class="chart">
+		        				<div class="donut-chart" id="tm"  data-title="%"></div>
+		      				</div>
+		      				<h3 id = "timeliness-title" class="fh5co-work-title" style="text-align: center">Timeliness</h3>
+		      			</a>
+					</div>
+					</div>
+
+					<div id="distinctnessBox">
+					<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+						<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="distinctness">
+							<div class="chart">
+		        				<div class="donut-chart" id="ds"  data-title="%"></div>
+		      				</div>
+		      				<h3 id = "distinctness-title" class="fh5co-work-title" style="text-align: center">Distinctness</h3>
+		      			</a>
+					</div>
+					</div>
+
+					<div class="clearfix visible-md-block"></div>
+
+					<div id="accuracyBox">
+
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+							<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
+							<div class = "acc">
+								<div id="chartContainer" style="height: 250px; width: 100%;">
+
+								</div>
+							</div>
+								<h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
+							</a>
+						</div>
+
+					</div>
+
+					<div id="consistencyBox" style="opacity: 0.5">
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 77px;">
+							<a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="consistency">
+								<div class="chart">
+									<div class="donut-chart" id="cs"  data-title="%"></div>
+								</div>
+								<h3 id = "consistency-title" class="fh5co-work-title" style="text-align: center">Consistency</h3>
+							</a>
+						</div>
+					</div>
+
+				
+				</div>		
+				
+			</div>
+
+			<div class="fh5co-narrow-content" style="padding-top:10px;">
+				<h4>Value level of Granularity</h4>
+				<p>Direct link to explore value level of granularity over an attribute</p>
+				<div class='btn-group'>
+					<button class='btn btn-primary dropdown-toggle' id="attributeButton" type='button' data-toggle='dropdown'>Attribute<span class='caret'></span></button>
+					<ul class='dropdown-menu dropMenu1' id='dropMenu1'>
+
+					</ul>
+				</div>
+				<div class='btn-group'>
+					<button class='btn btn-primary dropdown-toggle' id="dimensionButton" type='button' data-toggle='dropdown'>Dimension<span class='caret'></span></button>
+					<ul class='dropdown-menu dropMenu2' id='dropMenu2'>
+
+					</ul>
+				</div>
+				<a id = "go"><button type="button" class="btn btn-primary" style="margin-left:30px">GO</button></a>
+
+			</div>
+
+
+			<div class="fh5co-narrow-content">
+				<hr>
+				<h4>Custom filtering</h4>
+				<p>Make a custom filtering selecting attributes, dimensions, and ranges of scores</p>
+				<div class ="button-group">
+					<a href="filtering.html"><button type="button" class="btn btn-danger" id="filterButton" style="background: #da1212; color:#fff; border:2px solid #da1212;">Filter</button></a>
+				</div>
+
+			</div>
+
+			<div class="row work-pagination animate-box" data-animate-effect="fadeInLeft">
+
+				<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
+
+					<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+						<a href="index.html"><i class="icon-long-arrow-left"></i> <span>Return to Main Menu</span></a>
+					</div>
+
+				</div>
+			</div>
+
+			
+			
+
+		</div>
+	</div>
+
+	<!-- jQuery -->
+	
+	 
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Carousel -->
+	<script src="js/owl.carousel.min.js"></script>
+	<!-- Stellar -->
+	<script src="js/jquery.stellar.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Counters -->
+	<script src="js/jquery.countTo.js"></script>
+	<!-- CHARTS -->
+	<script src="js/chartsScript.js"></script>
+
+
+
+
+	
+	
+	<!-- MAIN JS -->
+	<script src="js/main.js"></script>
+	<script src="js/mainMenu.js"></script>
+	<script src="js/attributeClass.js"></script>
+	
+	
+	
+	
+
+
+	
+	</body>
+</html>
+

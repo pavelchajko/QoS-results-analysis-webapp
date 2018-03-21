@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Uploading folders in any browser</title>
+    <link rel="stylesheet" type="text/css" href="../../aurigma/last/fh/css/aurigma.htmluploader.control.css" />
+    <script src="../../aurigma/last/fh/aurigma.imageuploaderflash.js"></script>
+    <script src="../../aurigma/last/fh/aurigma.htmluploader.control.js"></script>
+    <script src="../../aurigma/last/aj/aurigma.uploader.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+
+    // Browser detection method is found at
+    // http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+    var isChrome = !!window.chrome && navigator.userAgent.indexOf(' OPR/') < 0;
+
+    var uploader;
+    if (isChrome) {
+        uploader = Aurigma.ImageUploaderFlash.imageUploaderFlash({
+            id: "aurigma-fh1"
+            // insert HTML5/Flash-specific params here
+        });
+    } else {
+        uploader = Aurigma.ImageUploader.uploader({
+            id: "aurigma-aj1",
+            activeXControl: {
+                codeBase: "../../aurigma/last/aj/Uploader8.cab",
+                codeBase64: "../../aurigma/last/aj/Uploader8_x64.cab"},
+            javaControl: {codeBase: "../../aurigma/last/aj/Uploader8.jar"},
+            folderPane: {
+                viewMode: 'Details'
+            },
+            uploadSettings: { filesPerPackage: 1 },
+            detailsViewColumns: { dimensionsText: '', infoText: '' }
+
+            // insert Java/ActivX-specific params here
+        });
+    }
+    uploader.set({
+        folderProcessingMode: 'Mixed',
+        uploadPane: { viewMode: 'Tiles' },
+        converters: [{ mode: "*.*=SourceFile" }],
+        uploadSettings: {
+            actionUrl: '/destination_url',
+            redirectUrl: '/redirect_url'
+        }
+    });
+    uploader.writeHtml();
+</script>
+</body>
+</html>
