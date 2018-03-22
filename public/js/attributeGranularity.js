@@ -8,27 +8,37 @@ $( document ).ready(function(){
     //NEW OBJECT OF TYPE ATTRIBUTE so we can get the path
 	var attributeObject = new attribute(dimension,source);
 	jsonFile = attributeObject.getJsonFIle();
-	
-	
 	//getAggregationAttributes function definition
 			 function getAggregationAttributes(jsonFile){
 			 	var update = document.getElementById('aggregationAttributes');
 			 	update.innerHTML+="Aggregation attributes:";
 			 	
-				for(i=0;i<jsonFile.length;i++){
-					
-					
-				
-					if(i!=jsonFile.length-1){
-					 var classa = "'"+jsonFile[i].Attribute+"'";
-			    	  update.innerHTML += " <a title='go to Value Granularity' href='valueGranularity.html' class="+classa+">"+jsonFile[i].Attribute + "</a>"+ ",";
-			    	}
-			    	else{
-			    	var classa = "'"+jsonFile[i].Attribute+"'";
-			    	 update.innerHTML += " <a title='go to Value Granularity' href='valueGranularity.html' class="+classa+">"+jsonFile[i].Attribute + "</a>"+ "";
-			    	}
-				}	
-			 }
+
+				if(dimension == "population") {
+                    for (i = 0; i < jsonFile.length; i++) {
+                        if (i != jsonFile.length - 1) {
+                            var classa = "'" + jsonFile[i].Attribute + "'";
+                            update.innerHTML += " <a title='No value granularity over this dimension.' href='#' class=" + classa + ">" + jsonFile[i].Attribute + "</a>" + ",";
+                        }
+                        else {
+                            var classa = "'" + jsonFile[i].Attribute + "'";
+                            update.innerHTML += " <a title='No value granularity over this dimension.' href='#' class=" + classa + ">" + jsonFile[i].Attribute + "</a>" + "";
+                        }
+                    }
+                }
+                else{
+                    for(i=0;i<jsonFile.length;i++){
+                        if(i!=jsonFile.length-1){
+                            var classa = "'"+jsonFile[i].Attribute+"'";
+                            update.innerHTML += " <a title='go to Value Granularity' href='valueGranularity.html' class="+classa+">"+jsonFile[i].Attribute + "</a>"+ ",";
+                        }
+                        else{
+                            var classa = "'"+jsonFile[i].Attribute+"'";
+                            update.innerHTML += " <a title='go to Value Granularity' href='valueGranularity.html' class="+classa+">"+jsonFile[i].Attribute + "</a>"+ "";
+                        }
+                    }
+				}
+             }
 	//getRules function definion
 			 function getRules(jsonFile){
 			 	var update = document.getElementById('aggregationAttributes');
@@ -102,13 +112,8 @@ $( document ).ready(function(){
 	 var glo = document.getElementById("globalGranularity");
   	 glo.innerHTML += globalValue;
 
-
-
-  	 // EXTRACT VALUE FOR HTML HEADER. 
-        
+  	 // EXTRACT VALUE FOR HTML HEADER.
         var col = [];
-      
-
         for (var i = 0; i < jsonFile.length; i++) {
             for (var key in jsonFile[i]) {
                 if (col.indexOf(key) === -1) {
@@ -142,11 +147,7 @@ $( document ).ready(function(){
 			}
 		}
         for (var i = 0; i < jsonFile.length; i++) {
-
             tr = table.insertRow(-1);
-
-
-
             for (var j = 0; j < col.length; j++) {
                 var tabCell = tr.insertCell(-1);
                 tabCell.innerHTML = jsonFile[i][col[j]];
@@ -158,7 +159,6 @@ $( document ).ready(function(){
                         if (jsonFile[i].CompletenessFrequencyValue>0.7){
                             tabCell.style = "background:green";
 						}
-
                 }
 
                 if(dimension=="completeness_missing") {
@@ -195,17 +195,15 @@ $( document ).ready(function(){
                    tabCell.style = "background:green";
                    var update = document.getElementById("attributeDescription");
                    update.innerHTML = "Attribute level of granularity shows all attributes selected in the quality analysis. Highlighted the attribute with highest Distinct Count.";
-
                 }
 
             }
         }
 
-        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        // FINALLY RENDER THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
         var divContainer = document.getElementById("showData");
         divContainer.innerHTML = "";
         divContainer.appendChild(table);
-
 
         //prepare for exploring valueGranularity
         $("a").click(function(){
@@ -214,8 +212,6 @@ $( document ).ready(function(){
 		localStorage.setItem('dimension',dimension);
 		localStorage.setItem('source',source);
         });
-	
-
 });
 
 

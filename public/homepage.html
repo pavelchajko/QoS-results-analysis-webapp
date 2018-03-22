@@ -59,203 +59,214 @@
 				
 			</div>
 
-				
-			<p style="font-size:80%; text-align:center; padding-left:150px; padding-right:150px; text-align:justify;">
-				All the quality dimensions on a global granularity level are compared to a scale. If the dimensions results are low the dimension will be marked <strong style="color: red">red</strong>, otherwise <strong style="color: green">green</strong>.
-				In order to correctly understand the quality results we suggest deep exploration of each quality dimension on attribute, and value level of granularity.</br>
-				</br>
-				Otherwise, you can group the dimensions by category of interest, or a data mining application that will be used further to process the data.
-			</p>
+            <ul class="nav nav-tabs" role="tablist" style="margin-left: 120px; margin-right: 120px;">
+                <li role="presentation" class="active"><a href="#global-tab1" aria-controls="global-tab1" role="tab" data-toggle="tab">Global</a></li>
+                <li role="presentation"><a href="#attribute-tab2" aria-controls="attribute-tab2" role="tab" data-toggle="tab">Attribute</a></li>
+                <li role="presentation"><a id="value-tab" href="#value-tab3" aria-controls="value-tab3" role="tab" data-toggle="tab">Value</a></li>
+                <li role="presentation"><a href="#custom-tab4" aria-controls="custom-tab4" role="tab" data-toggle="tab">Custom</a></li>
+            </ul>
 
-				<div>
-					 <div class="btn-group" style="margin-left: 150px">
-									  <button type="button" class="btn btn-primary dropdown-toggle" id="buttonView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									    Standard <span class="caret"></span>
-									  </button>
-									  <ul class="dropdown-menu" id="dropdown-view">
-									    <li class="Standard">Standard</li>
-									    <li class="Category">Category</li>
-									    <li class="Data Mining">Data Mining</li>
-									  </ul>
-				     </div>
-				      <div class="btn-group" style="margin-left: 20px">
-									  <button type="button" class="btn btn-primary dropdown-toggle" id="buttonGroupBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									    Group By <span class="caret"></span>
-									  </button>
-									  <ul class="dropdown-menu" id="dropdown-groupBy">
-									    <li class="Clustering">Clustering</li>
-									    <li class="Association">Association</li>
-									    <li class="Time Validity">Time Validity</li>
-										  <li class="Corectness">Correctness</li>
-										  <li class="Completeness">Completeness</li>
-									  </ul>
-				     </div>
-				</div>
+            <div class="tab-content clearfix">
+                <div role="tabpanel" class="tab-pane fade in active" id="global-tab1" style="margin-top: 50px;">
+                    <p style="font-size:100%; text-align:center; padding-left:150px; padding-right:150px; text-align:justify;">
+                        All the quality dimensions on a global granularity level are compared to a scale. If the dimensions results are low the dimension will be marked <strong style="color: red">red</strong>, otherwise <strong style="color: green">green</strong>.
+                        In order to correctly understand the quality results we suggest deep exploration of each quality dimension on attribute, and value level of granularity.</br>
+                        </br>
+                        Otherwise, you can group the dimensions by category of interest, or a data mining application that will be used further to process the data.
+                    </p>
 
-			<div class = "fh5co-narrow-content">
-				<div class="row animate-box" data-animate-effect="fadeInLeft" style="border:groove; border-width: 0.5px; border-spacing: 15px">
+                        <div>
+                             <div class="btn-group" style="margin-left: 150px">
+                                              <button type="button" class="btn btn-primary dropdown-toggle" id="buttonView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Standard <span class="caret"></span>
+                                              </button>
+                                              <ul class="dropdown-menu" id="dropdown-view">
+                                                <li class="Standard">Standard</li>
+                                                <li class="Category">Category</li>
+                                                <li class="Data Mining">Data Mining</li>
+                                              </ul>
+                             </div>
+                              <div class="btn-group" style="margin-left: 20px">
+                                              <button type="button" class="btn btn-primary dropdown-toggle" id="buttonGroupBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Group By <span class="caret"></span>
+                                              </button>
+                                              <ul class="dropdown-menu" id="dropdown-groupBy">
+                                                <li class="Clustering">Clustering</li>
+                                                <li class="Association">Association</li>
+                                                <li class="Time Validity">Time Validity</li>
+                                                  <li class="Corectness">Correctness</li>
+                                                  <li class="Completeness">Completeness</li>
+                                              </ul>
+                             </div>
+                        </div>
 
-					<div id="cpmBox">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-						 	<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="completeness_missing">
-							<div class="chart">
-		        				<div class="donut-chart" id="cpm"></div>
-		      				</div>
-		      				<h3 id = "cm-title" class="fh5co-work-title" style="text-align: center">Completeness missing</h3>
-		      			   </a>
-						</div>
-					</div>
+                    <div class = "fh5co-narrow-content">
+                        <div class="row animate-box" data-animate-effect="fadeInLeft" style="border:groove; border-width: 0.5px; border-spacing: 15px">
 
-					<div id="cfBox">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-						  <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="completeness_frequency">
-							<div class="chart">
-		        				<div class="donut-chart" id="cf"  data-title="%"></div>
-		      				</div>
-		      				<h3 id = "cf-title" class="fh5co-work-title" style="text-align: center">Completeness frequency</h3>
-		      			  </a>
-						</div>
-					</div>
-
-					<div id="vBox">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-						   <a title = "go to Attribute level"  href="attributeGranularity.html" class="dimension" id="volume">
-							<div class="chart">
-		        				<div class="donut-chart" id="v"  data-title="%"></div>
-		      				</div>
-		      				<h3 id = "volume-title" class="fh5co-work-title" style="text-align: center">Volume</h3>
-		      			   </a>
-						</div>
-					</div>
-					
-					<div class="clearfix visible-md-block"></div>
-
-					<div id="precisionBox">
-					<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-						<a title = "go to Attribute level"  href="attributeGranularity.html" class="dimension" id="precision">
-							<div class="chart">
-		        				<div class="donut-chart" id="pr"  data-title="%"></div>
-		      				</div>
-		      				<h3 id = "precision-title" class="fh5co-work-title" style="text-align: center">Precision</h3>
-		      			</a>
-					</div>	
-					</div>
-
-					<div id="timelinessBox">
-					<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-						<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="timeliness">
-							<div class="chart">
-		        				<div class="donut-chart" id="tm"  data-title="%"></div>
-		      				</div>
-		      				<h3 id = "timeliness-title" class="fh5co-work-title" style="text-align: center">Timeliness</h3>
-		      			</a>
-					</div>
-					</div>
-
-					<div id="distinctnessBox">
-					<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-						<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="distinctness">
-							<div class="chart">
-		        				<div class="donut-chart" id="ds"  data-title="%"></div>
-		      				</div>
-		      				<h3 id = "distinctness-title" class="fh5co-work-title" style="text-align: center">Distinctness</h3>
-		      			</a>
-					</div>
-					</div>
-
-					<div class="clearfix visible-md-block"></div>
-
-					<!--
-					<div id="accuracyBox">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
-							<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
-							<div class = "acc">
-								<div id="chartContainer" style="height: 250px; width: 100%;">
-
-								</div>
-							</div>
-								<h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
-							</a>
-						</div>
-					</div>
-						-->
-
-					<div id="accuracyBox" style="opacity: 1">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
-							<a title = "Go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
-								<div class="chart">
-									<div class="donut-chart" id="acc"  data-title="%"></div>
-								</div>
-								<h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
-							</a>
-						</div>
-					</div>
-
-					<div id="consistencyBox" style="opacity: 1">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
-							<a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="consistency">
-								<div class="chart">
-									<div class="donut-chart" id="cs"  data-title="%"></div>
-								</div>
-								<h3 id = "consistency-title" class="fh5co-work-title" style="text-align: center">Consistency</h3>
-							</a>
-						</div>
-					</div>
-
-                    <div id="populationBox" style="opacity: 1">
-                        <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
-                            <a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="population">
-                                <div class="chart">
-                                    <div class="donut-chart" id="cp"  data-title="%"></div>
+                            <div id="cpmBox">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                    <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="completeness_missing">
+                                    <div class="chart">
+                                        <div class="donut-chart" id="cpm"></div>
+                                    </div>
+                                    <h3 id = "cm-title" class="fh5co-work-title" style="text-align: center">Completeness missing</h3>
+                                   </a>
                                 </div>
-                                <h3 id = "population-title" class="fh5co-work-title" style="text-align: center">Completeness Population</h3>
-                            </a>
+                            </div>
+
+                            <div id="cfBox">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                  <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="completeness_frequency">
+                                    <div class="chart">
+                                        <div class="donut-chart" id="cf"  data-title="%"></div>
+                                    </div>
+                                    <h3 id = "cf-title" class="fh5co-work-title" style="text-align: center">Completeness frequency</h3>
+                                  </a>
+                                </div>
+                            </div>
+
+                            <div id="vBox">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                   <a title = "go to Attribute level"  href="attributeGranularity.html" class="dimension" id="volume">
+                                    <div class="chart">
+                                        <div class="donut-chart" id="v"  data-title="%"></div>
+                                    </div>
+                                    <h3 id = "volume-title" class="fh5co-work-title" style="text-align: center">Volume</h3>
+                                   </a>
+                                </div>
+                            </div>
+
+                            <div class="clearfix visible-md-block"></div>
+
+                            <div id="precisionBox">
+                            <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                <a title = "go to Attribute level"  href="attributeGranularity.html" class="dimension" id="precision">
+                                    <div class="chart">
+                                        <div class="donut-chart" id="pr"  data-title="%"></div>
+                                    </div>
+                                    <h3 id = "precision-title" class="fh5co-work-title" style="text-align: center">Precision</h3>
+                                </a>
+                            </div>
+                            </div>
+
+                            <div id="timelinessBox">
+                            <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="timeliness">
+                                    <div class="chart">
+                                        <div class="donut-chart" id="tm"  data-title="%"></div>
+                                    </div>
+                                    <h3 id = "timeliness-title" class="fh5co-work-title" style="text-align: center">Timeliness</h3>
+                                </a>
+                            </div>
+                            </div>
+
+                            <div id="distinctnessBox">
+                            <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="distinctness">
+                                    <div class="chart">
+                                        <div class="donut-chart" id="ds"  data-title="%"></div>
+                                    </div>
+                                    <h3 id = "distinctness-title" class="fh5co-work-title" style="text-align: center">Distinctness</h3>
+                                </a>
+                            </div>
+                            </div>
+
+                            <div class="clearfix visible-md-block"></div>
+
+                            <!--
+                            <div id="accuracyBox">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
+                                    <a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
+                                    <div class = "acc">
+                                        <div id="chartContainer" style="height: 250px; width: 100%;">
+
+                                        </div>
+                                    </div>
+                                        <h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
+                                    </a>
+                                </div>
+                            </div>
+                                -->
+
+                            <div id="accuracyBox" style="opacity: 1">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
+                                    <a title = "Go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
+                                        <div class="chart">
+                                            <div class="donut-chart" id="acc"  data-title="%"></div>
+                                        </div>
+                                        <h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div id="consistencyBox" style="opacity: 1">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
+                                    <a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="consistency">
+                                        <div class="chart">
+                                            <div class="donut-chart" id="cs"  data-title="%"></div>
+                                        </div>
+                                        <h3 id = "consistency-title" class="fh5co-work-title" style="text-align: center">Consistency</h3>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div id="populationBox" style="opacity: 1">
+                                <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
+                                    <a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="population">
+                                        <div class="chart">
+                                            <div class="donut-chart" id="cp"  data-title="%"></div>
+                                        </div>
+                                        <h3 id = "population-title" class="fh5co-work-title" style="text-align: center">Completeness Population</h3>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="attribute-tab2" style="margin-top: 50px;">
+                    <div class="fh5co-narrow-content" style="padding-top:10px;">
+                        <h4>Attribute level of Granularity</h4>
+                        <p>Direct link to explore value level of granularity over an attribute</p>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="value-tab3" style="margin-top: 50px;">
+                    <div class="fh5co-narrow-content" style="padding-top:10px;">
+                        <h4>Value level of Granularity</h4>
+                        <p>Direct link to explore value level of granularity over an attribute</p>
+                        <div class='btn-group'>
+                            <button class='btn btn-primary dropdown-toggle' id="attributeButton" type='button' data-toggle='dropdown'>Attribute<span class='caret'></span></button>
+                            <ul class='dropdown-menu dropMenu1' id='dropMenu1'>
+
+                            </ul>
+                        </div>
+                        <div class='btn-group'>
+                            <button class='btn btn-primary dropdown-toggle' id="dimensionButton" type='button' data-toggle='dropdown'>Dimension<span class='caret'></span></button>
+                            <ul class='dropdown-menu dropMenu2' id='dropMenu2'>
+
+                            </ul>
+                        </div>
+                        <a id = "go"><button type="button" class="btn btn-primary" style="margin-left:30px">GO</button></a>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="custom-tab4" style="margin-top: 50px;">
+                    <div class="fh5co-narrow-content" style="padding-top:10px;">
+                        <h4>Custom filtering</h4>
+                        <p>Make a custom filtering selecting attributes, dimensions, and ranges of scores.  </p>
+                        <div class ="button-group">
+                            <a href="filtering.html"><button type="button" class="btn btn-danger" id="filterButton" style="background: #da1212; color:#fff; border:2px solid #da1212;">Filter</button></a>
                         </div>
                     </div>
-
-				
-				</div>		
-				
-			</div>
-
-			<div class="fh5co-narrow-content" style="padding-top:10px;">
-				<h4>Value level of Granularity</h4>
-				<p>Direct link to explore value level of granularity over an attribute</p>
-				<div class='btn-group'>
-					<button class='btn btn-primary dropdown-toggle' id="attributeButton" type='button' data-toggle='dropdown'>Attribute<span class='caret'></span></button>
-					<ul class='dropdown-menu dropMenu1' id='dropMenu1'>
-
-					</ul>
-				</div>
-				<div class='btn-group'>
-					<button class='btn btn-primary dropdown-toggle' id="dimensionButton" type='button' data-toggle='dropdown'>Dimension<span class='caret'></span></button>
-					<ul class='dropdown-menu dropMenu2' id='dropMenu2'>
-
-					</ul>
-				</div>
-				<a id = "go"><button type="button" class="btn btn-primary" style="margin-left:30px">GO</button></a>
-
-			</div>
-
-
-			<div class="fh5co-narrow-content">
-				<hr>
-				<h4>Custom filtering</h4>
-				<p>Make a custom filtering selecting attributes, dimensions, and ranges of scores</p>
-				<div class ="button-group">
-					<a href="filtering.html"><button type="button" class="btn btn-danger" id="filterButton" style="background: #da1212; color:#fff; border:2px solid #da1212;">Filter</button></a>
-				</div>
-
-			</div>
+                </div>
+            </div>
 
 			<div class="row work-pagination animate-box" data-animate-effect="fadeInLeft">
-
 				<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
-
 					<div class="col-md-4 col-sm-4 col-xs-4 text-center">
-						<a href="index.html"><i class="icon-long-arrow-left"></i> <span>Return to Main Menu</span></a>
+						<a href="index.html"><i class="icon-long-arrow-left"></i> <span>Return to Data Source Selection</span></a>
 					</div>
-
 				</div>
 			</div>
 
