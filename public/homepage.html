@@ -165,8 +165,8 @@
 
 					<div class="clearfix visible-md-block"></div>
 
+					<!--
 					<div id="accuracyBox">
-
 						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12">
 							<a title = "go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
 							<div class = "acc">
@@ -177,11 +177,22 @@
 								<h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
 							</a>
 						</div>
+					</div>
+						-->
 
+					<div id="accuracyBox" style="opacity: 1">
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
+							<a title = "Go to Attribute level" href="attributeGranularity.html" class="dimension" id="accuracy">
+								<div class="chart">
+									<div class="donut-chart" id="acc"  data-title="%"></div>
+								</div>
+								<h3 id = "accuracy-title" class="fh5co-work-title" style="text-align: center">Accuracy</h3>
+							</a>
+						</div>
 					</div>
 
-					<div id="consistencyBox" style="opacity: 0.5">
-						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 77px;">
+					<div id="consistencyBox" style="opacity: 1">
+						<div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
 							<a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="consistency">
 								<div class="chart">
 									<div class="donut-chart" id="cs"  data-title="%"></div>
@@ -190,6 +201,17 @@
 							</a>
 						</div>
 					</div>
+
+                    <div id="populationBox" style="opacity: 1">
+                        <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12" style="padding-top: 0px;">
+                            <a title = "No global granularity results available. Go to Attribute level" href="attributeGranularity.html" class="dimension" id="population">
+                                <div class="chart">
+                                    <div class="donut-chart" id="cp"  data-title="%"></div>
+                                </div>
+                                <h3 id = "population-title" class="fh5co-work-title" style="text-align: center">Completeness Population</h3>
+                            </a>
+                        </div>
+                    </div>
 
 				
 				</div>		

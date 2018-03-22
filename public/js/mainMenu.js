@@ -182,18 +182,29 @@ $( document ).ready(function(){
 				 dynamic = json[filteredNames[1]];
 
         	}
-
+        	var accuracyVar = 0;
+        if(json.hasOwnProperty(filteredNames[0]) && !filteredNames[0].includes("Static") && !filteredNames[0].includes("Dynamic")) {
+        	    accuracyVar = json[filteredNames[0]];
+        }
+        $('#acc').attr('data-percent',accuracyVar.toString().slice(0,4));
+        if(accuracyVar.toString().slice(0,4)<0.7){
+            $("#accuracy-title").css("color", "red");
+        }
+        else if(accuracyVar.toString().slice(0,4)>0.7){
+            $("#accuracy-title").css("color", "green");
+        }
+        $('#acc').cssCharts({type:"donut"}).trigger('show-donut-chart');
+        $('#acc').parent().parent().attr('value',accuracyVar.toString().slice(0,4));
         filteredNames=[];
+
+
         CanvasJS.addColorSet("greenShades",
             [//colorSet Array
-
-
-
                 "#da1212",
                 "#da1245"
             ]);
         //creating a chart for accuracy
-        var chart = new CanvasJS.Chart("chartContainer", {
+/*        var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             colorSet: "greenShades",
 			width:250,
@@ -219,7 +230,7 @@ $( document ).ready(function(){
             }]
         });
         chart.render();
-        $("#accuracy-title").css("color", "red");
+        $("#accuracy-title").css("color", "red");*/
 		////////////////////////////////////
 	    
 		// VOLUME
@@ -308,7 +319,7 @@ $( document ).ready(function(){
     	$('#ds').cssCharts({type:"donut"}).trigger('show-donut-chart');
     	$('#ds').parent().parent().attr('value',json.Distinctness.toString().slice(0,4));  	
     	
-	    //////////////////////////////////// CONISTENCY
+	    //////////////////////////////////// CONISTENCY set to zero because it can't be calculated on global level
 
         $('#cs').attr('data-percent',0);
 
@@ -317,6 +328,16 @@ $( document ).ready(function(){
 
         $('#cs').cssCharts({type:"donut"}).trigger('show-donut-chart');
         $('#cs').parent().parent().attr('value',0);
+
+        //////////////////////////////////// Completeness population set to zero because it can't be calculated on global level
+
+        $('#cp').attr('data-percent',0);
+
+        $("#population-title").css("color", "red");
+        $("#populationBox").css("padding-top","80px");
+
+        $('#cp').cssCharts({type:"donut"}).trigger('show-donut-chart');
+        $('#cp').parent().parent().attr('value',0);
     });
 
     //DIRECT LINK TO VALUE LEVEL GRANULARITY
