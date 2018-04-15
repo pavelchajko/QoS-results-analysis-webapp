@@ -3,7 +3,7 @@ function value(dimension,attributeOfAggregation,source){
 
     //this.dimension=dimensionName;
     this.aggregationAttributes=[];
-    this.url = "/value?firstFolder=public/dataSources/"+source+"/DQAssessment_results/&dimension="+dimension+"/&attribute="+attributeOfAggregation;
+    this.url = "/value?firstFolder=public/dataSources/"+source+"/DQAssessment_results/&dimension="+dimension+"&attribute="+attributeOfAggregation;
 
     //Methods
    this.getPath = function(){

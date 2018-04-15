@@ -9,6 +9,7 @@ var dimensionName="";
 var source = "";
 var customValue= "";
 var arrLow =[];var arrMed=[];var arrHigh=[];
+localStorage.removeItem('arrayOfValues');
 $( document ).ready(function(){
 	attributeOfAggregation = localStorage.getItem('attributeOfAggregation');
     dimensionName = localStorage.getItem('dimension');
@@ -19,143 +20,224 @@ $( document ).ready(function(){
 	jsonFile = valueObject.getJsonFIle();
 	
 
-	//update valueGranularity.html
-	//check if the file exits..because if <1 it means the server responded with ""
-	if(jsonFile.length>1){
 	jsonFile = JSON.parse(jsonFile);
-	}
-	else{
-		var AA = document.getElementById('fileNotPresent');
-		AA.innerHTML += "None(it is not possible to have value level granularity on this dimension)";
-	}
-	 
+
 
 	 var di = document.getElementById("dimensionName");
 	 di.innerHTML += dimensionName;
 
 	 var glo = document.getElementById("aggregationAttribute");
-   glo.innerHTML += attributeOfAggregation;
+     glo.innerHTML += attributeOfAggregation;
 
+    if(dimensionName=="accuracy"){
+        rangeName = "AccuracyValue";
+        groupsHolders =[0.01,0.1];
+        var temp = jsonFile[0];
+        var count =-1;
+        for(var i in temp){
+            count=count+1;
+            if(i =="AccuracyDynamic"){
+                range = count;
+            }
+        }
+        var low=0,med=0,high=0;
+        arrLow =[],arrMed=[],arrHigh=[];
+        for(var i in jsonFile){
+            if(jsonFile[i].AccuracyDynamic<groupsHolders[0]){
+                low+=1;
+                arrLow.push(jsonFile[i].Value);
+            }
+            if(jsonFile[i].AccuracyDynamic>=groupsHolders[0] && jsonFile[i].AccuracyDynamic<groupsHolders[1]){
+                med+=1;
+                arrMed.push(jsonFile[i].Value);
+            }
+            else if(jsonFile[i].AccuracyDynamic>groupsHolders[1]){
+                high+=1;
+                arrHigh.push(jsonFile[i].Value);
+            }
 
-if(dimensionName=="completeness_frequency"){
-    rangeName = "CompletenessFrequencyValue";
-     groupsHolders =[0.35,0.80];
+        }
+    }
+    if(dimensionName=="timeliness"){
+        rangeName = "Timeliness";
+        groupsHolders =[0.4,0.6];
 
         var temp = jsonFile[0];
         var count =-1;
         for(var i in temp){
-          count=count+1;
-          if(i =="CompletenessFrequencyValue"){
-            range = count;
-          }
+            count=count+1;
+            if(i =="TimelinessMean"){
+                range = count;
+            }
         }
-        
-       var low=0,med=0,high=0;
-       arrLow =[],arrMed=[],arrHigh=[];
-       for(var i in jsonFile){
-          if(jsonFile[i].CompletenessFrequencyValue<0.35){
-            low+=1;
-            arrLow.push(jsonFile[i].Value);
-          }
-          if(jsonFile[i].CompletenessFrequencyValue>=0.35 && jsonFile[i].CompletenessFrequencyValue<0.80){
-            med+=1;
-            arrMed.push(jsonFile[i].Value);
-          }
-          else{
-            high+=1;
-            arrHigh.push(jsonFile[i].Value);
-          }
+        var low=0,med=0,high=0;
+        arrLow =[],arrMed=[],arrHigh=[];
+        for(var i in jsonFile){
+            if(jsonFile[i].TimelinessMean<groupsHolders[0]){
+                low+=1;
+                arrLow.push(jsonFile[i].Value);
+            }
+            if(jsonFile[i].TimelinessMean>=groupsHolders[0] && jsonFile[i].TimelinessMean<groupsHolders[1]){
+                med+=1;
+                arrMed.push(jsonFile[i].Value);
+            }
+            else if(jsonFile[i].TimelinessMean>groupsHolders[1]){
+                high+=1;
+                arrHigh.push(jsonFile[i].Value);
+            }
 
-       }
-  }
+        }
+    }
+    if(dimensionName=="precision"){
+        rangeName = "Precision";
+        groupsHolders =[0.4,0.6];
 
-if(dimensionName=="completeness_missing"){
-    rangeName = "CompletenessMissingValue";
-     groupsHolders =[0,1];
-
-     var temp = jsonFile[0];
+        var temp = jsonFile[0];
         var count =-1;
         for(var i in temp){
-          count=count+1;
-          if(i =="CompletenessMissingValue"){
-            range = count;
-          }
+            count=count+1;
+            if(i =="Precision"){
+                range = count;
+            }
         }
-       var low=0,med=0,high=0;
-       arrLow =[],arrMed=[],arrHigh=[];
-       for(var i in jsonFile){
-          if(jsonFile[i].CompletenessMissingValue==0){
-            low+=1;
-            arrLow.push(jsonFile[i].Value);
-          }
-          
-          else{
-            high+=1;
-            arrHigh.push(jsonFile[i].Value);
-          }
+        var low=0,med=0,high=0;
+        arrLow =[],arrMed=[],arrHigh=[];
+        for(var i in jsonFile){
+            if(jsonFile[i].Precision<0.40){
+                low+=1;
+                arrLow.push(jsonFile[i].Value);
+            }
+            if(jsonFile[i].Precision>=0.40 && jsonFile[i].Precision<0.60){
+                med+=1;
+                arrMed.push(jsonFile[i].Value);
+            }
+            else if(jsonFile[i].Precision>0.60){
+                high+=1;
+                arrHigh.push(jsonFile[i].Value);
+            }
 
-       }
-  }
-if(dimensionName=="volume"){
-    rangeName = "VolumeValue";
-     groupsHolders =[0.0005,0.01];
-
-     var temp = jsonFile[0];
-        var count =-1;
-        for(var i in temp){
-          count=count+1;
-          if(i =="VolumeValue"){
-            range = count;
-          }
         }
-       var low=0,med=0,high=0;
-       arrLow =[],arrMed=[],arrHigh=[];
-       for(var i in jsonFile){
-          if(jsonFile[i].VolumeValue<groupsHolders[0]){
-            low+=1;
-            arrLow.push(jsonFile[i].Value);
-          }
-          if(jsonFile[i].VolumeValue>=groupsHolders[0] && jsonFile[i].VolumeValue<groupsHolders[1]){
-            med+=1;
-            arrMed.push(jsonFile[i].Value);
-          }
-          else{
-            high+=1;
-            arrHigh.push(jsonFile[i].Value);
-          }
+    }
+    if(dimensionName=="completeness_frequency"){
+        rangeName = "CompletenessFrequencyValue";
+         groupsHolders =[0.35,0.80];
 
-       }
-  }
-if(dimensionName=="consistency"){
-     groupsHolders =[0.3,0.85];
-     rangeName = "ConsistencyValue";
+            var temp = jsonFile[0];
+            var count =-1;
+            for(var i in temp){
+              count=count+1;
+              if(i =="CompletenessFrequencyValue"){
+                range = count;
+              }
+            }
+           var low=0,med=0,high=0;
+           arrLow =[],arrMed=[],arrHigh=[];
+           for(var i in jsonFile){
+              if(jsonFile[i].CompletenessFrequencyValue<0.35){
+                low+=1;
+                arrLow.push(jsonFile[i].Value);
+              }
+              if(jsonFile[i].CompletenessFrequencyValue>=0.35 && jsonFile[i].CompletenessFrequencyValue<0.80){
+                med+=1;
+                arrMed.push(jsonFile[i].Value);
+              }
+              else if(jsonFile[i].CompletenessFrequencyValue>0.80){
+                high+=1;
+                arrHigh.push(jsonFile[i].Value);
+              }
 
-     var temp = jsonFile[0];
-        var count =-1;
-        for(var i in temp){
-          count=count+1;
-          if(i =="ConsistencyValue"){
-            range = count;
-          }
-        }
-       var low=0,med=0,high=0;
-       arrLow =[],arrMed=[],arrHigh=[];
-       for(var i in jsonFile){
-          if(jsonFile[i].ConsistencyValue<groupsHolders[0]){
-            low+=1;
-            arrLow.push(jsonFile[i].AntecedentValue);
-          }
-          if(jsonFile[i].ConsistencyValue>=groupsHolders[0] && jsonFile[i].ConsistencyValue<groupsHolders[1]){
-            med+=1;
-            arrMed.push(jsonFile[i].AntecedentValue);
-          }
-          else if(jsonFile[i].ConsistencyValue>=groupsHolders[1]){
-            high+=1;
-            arrHigh.push(jsonFile[i].AntecedentValue);
-          }
+           }
+      }
+    if(dimensionName=="completeness_missing"){
+        rangeName = "CompletenessMissingValue";
+         groupsHolders =[0,1];
 
-       }
-  }  
+         var temp = jsonFile[0];
+            var count =-1;
+            for(var i in temp){
+              count=count+1;
+              if(i =="CompletenessMissingValue"){
+                range = count;
+              }
+            }
+           var low=0,med=0,high=0;
+           arrLow =[],arrMed=[],arrHigh=[];
+           for(var i in jsonFile){
+              if(jsonFile[i].CompletenessMissingValue==0){
+                low+=1;
+                arrLow.push(jsonFile[i].Value);
+              }
+              if(jsonFile[i].CompletenessMissingValue>0 && jsonFile[i].CompletenessMissingValue<1){
+                  med+=1;
+                  arrMed.push(jsonFile[i].Value);
+              }
+              else if(jsonFile[i].CompletenessMissingValue==1){
+                high+=1;
+                arrHigh.push(jsonFile[i].Value);
+              }
+
+           }
+      }
+    if(dimensionName=="volume"){
+        rangeName = "VolumeValue";
+         groupsHolders =[0.0005,0.01];
+
+         var temp = jsonFile[0];
+            var count =-1;
+            for(var i in temp){
+              count=count+1;
+              if(i =="VolumeValue"){
+                range = count;
+              }
+            }
+           var low=0,med=0,high=0;
+           arrLow =[],arrMed=[],arrHigh=[];
+           for(var i in jsonFile){
+              if(jsonFile[i].VolumeValue<groupsHolders[0]){
+                low+=1;
+                arrLow.push(jsonFile[i].Value);
+              }
+              if(jsonFile[i].VolumeValue>=groupsHolders[0] && jsonFile[i].VolumeValue<groupsHolders[1]){
+                med+=1;
+                arrMed.push(jsonFile[i].Value);
+              }
+              else if(jsonFile[i].VolumeValue>groupsHolders[1]){
+                high+=1;
+                arrHigh.push(jsonFile[i].Value);
+              }
+
+           }
+      }
+    if(dimensionName=="consistency"){
+         groupsHolders =[0.3,0.85];
+         rangeName = "ConsistencyValue";
+
+         var temp = jsonFile[0];
+            var count =-1;
+            for(var i in temp){
+              count=count+1;
+              if(i =="ConsistencyValue"){
+                range = count;
+              }
+            }
+           var low=0,med=0,high=0;
+           arrLow =[],arrMed=[],arrHigh=[];
+           for(var i in jsonFile){
+              if(jsonFile[i].ConsistencyValue<groupsHolders[0]){
+                low+=1;
+                arrLow.push(jsonFile[i].AntecedentValue);
+              }
+              if(jsonFile[i].ConsistencyValue>=groupsHolders[0] && jsonFile[i].ConsistencyValue<groupsHolders[1]){
+                med+=1;
+                arrMed.push(jsonFile[i].AntecedentValue);
+              }
+              else if(jsonFile[i].ConsistencyValue>=groupsHolders[1]){
+                high+=1;
+                arrHigh.push(jsonFile[i].AntecedentValue);
+              }
+
+           }
+      }
 
   var setLow = document.getElementById("low");
   setLow.innerHTML +="<"+groupsHolders[0];
@@ -184,7 +266,7 @@ if(dimensionName=="consistency"){
         dataPoints: [      
           { y: low, label: "Low" },
           { y: med,  label: "Medium" },
-          { y: high,  label: "High" },
+          { y: high,  label: "High" }
 
         ]
          
@@ -199,20 +281,21 @@ if(dimensionName=="consistency"){
            
             var detailedObject;
               switch(e.dataPoint.x) {
+
                   case 0:
-                  localStorage.setItem('arrayOfValues',arrLow);
-                  localStorage.setItem('dimensionName',dimensionName);
-                  localStorage.setItem('attributeOfAggregation',attributeOfAggregation);
-                  window.location.replace("detailedGranularity.html");
+                      localStorage["arrayOfValues"] = JSON.stringify(arrLow);
+                      localStorage.setItem('dimensionName',dimensionName);
+                      localStorage.setItem('attributeOfAggregation',attributeOfAggregation);
+                      window.location.replace("detailedGranularity.html");
                       break;
                   case 1:
-                  localStorage.setItem('arrayOfValues',arrMed);
+                  localStorage["arrayOfValues"] = JSON.stringify(arrMed);
                   localStorage.setItem('attributeOfAggregation',attributeOfAggregation);
                   localStorage.setItem('dimensionName',dimensionName);
                   window.location.replace("detailedGranularity.html");
                       break;
                   case 2:
-                    localStorage.setItem('arrayOfValues',arrHigh);
+                      localStorage["arrayOfValues"] = JSON.stringify(arrHigh);
                     localStorage.setItem('attributeOfAggregation',attributeOfAggregation);
                     localStorage.setItem('dimensionName',dimensionName);
                     window.location.replace("detailedGranularity.html");
@@ -314,8 +397,6 @@ if(dimensionName=="consistency"){
         localStorage.setItem('customValue',customValue);
         localStorage.setItem('attributeOfAggregation',attributeOfAggregation);
         localStorage.setItem('dimensionName',dimensionName);
-        console.log(customValue);
-
     })
 
 
@@ -325,14 +406,10 @@ if(dimensionName=="consistency"){
             localStorage.setItem('customValue',customValue);
             localStorage.setItem('attributeOfAggregation',attributeOfAggregation);
             localStorage.setItem('dimensionName',dimensionName);
-            console.log(customValue);
-
         })
     } );
 
       
-       
 
 });
-
 

@@ -229,13 +229,22 @@
                 <div role="tabpanel" class="tab-pane fade" id="attribute-tab2" style="margin-top: 50px;">
                     <div class="fh5co-narrow-content" style="padding-top:10px;">
                         <h4>Attribute level of Granularity</h4>
-                        <p>Direct link to explore value level of granularity over an attribute</p>
+                        <p>Direct link to explore attributes scores over a quality dimension. Inspecting attribute level of granularity is exploration of
+                        scores according attributes of aggregation. This gives more detailed information comparing to global results.</p>
+                        <div class='btn-group'>
+                            <button class='btn btn-primary dropdown-toggle' id="dimensionButton1" type='button' data-toggle='dropdown'>Dimension<span class='caret'></span></button>
+                            <ul class='dropdown-menu dropMenu2' id='dropDimension'>
+
+                            </ul>
+                        </div>
+                        <a id = "go-attribute"><button type="button" class="btn btn-primary" style="margin-left:30px">GO</button></a>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="value-tab3" style="margin-top: 50px;">
                     <div class="fh5co-narrow-content" style="padding-top:10px;">
                         <h4>Value level of Granularity</h4>
-                        <p>Direct link to explore value level of granularity over an attribute</p>
+                        <p>Direct link to explore value level of granularity over an attribute. This is the highes level of detail from the quality results.
+                        It provides information regarding each record of the attribute aggregating the scores.</p>
                         <div class='btn-group'>
                             <button class='btn btn-primary dropdown-toggle' id="attributeButton" type='button' data-toggle='dropdown'>Attribute<span class='caret'></span></button>
                             <ul class='dropdown-menu dropMenu1' id='dropMenu1'>

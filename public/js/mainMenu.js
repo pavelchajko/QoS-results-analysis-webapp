@@ -3,6 +3,7 @@ $( document ).ready(function(){
 	var source = localStorage.getItem('source');
     var arr = [];
     var dimensionArr = [];
+    var dimensionsOverAttribute = [];
 	//take the id of the dimension that was pressed in Main Menu
 	$(".dimension").click(function(){
 	   var dimension = $(this).closest(".dimension").attr("id");
@@ -110,8 +111,6 @@ $( document ).ready(function(){
     xmlHttp.send();
     return xmlHttp.responseText;
    }
-
-
     // function that explores all properties from final-result file
 	var filtered_keys = function(obj, filter) {
 		  var key, keys = [];
@@ -122,49 +121,66 @@ $( document ).ready(function(){
 		  }
 		  return keys;
 	}
-	
- 	
- 	
+
  	//UPDATE ALL THE GLOBAL RESULTS
  	var path = httpGet("/folder?query=public/dataSources/"+source+"/DQAssessment_results/final_quality");
     $.getJSON("/dataSources/"+source+"/DQAssessment_results/final_quality/"+path, function(json) {
 
-	   
-    	$('#cpm').attr('data-percent',json.Completeness_Missing.toString().slice(0,4));
-    	if(json.Completeness_Missing.toString().slice(0,4)<0.85){
-		   			 $("#cm-title").css("color", "red");
-		   		}
-		else if(json.Completeness_Missing.toString().slice(0,4)>0.85){
-		   			 $("#cm-title").css("color", "green");
-		   		}   		
-    	$('#cpm').cssCharts({type:"donut"}).trigger('show-donut-chart');
-    	$('#cpm').attr('data-title','%');
-    	$('#cpm').parent().parent().attr('value',json.Completeness_Missing.toString().slice(0,4));
+        // REGEX matching of completness missing
+        var filteredNames = [];
+        filteredNames = filtered_keys(json, /Completeness_Missing/);
+        if(json.hasOwnProperty(filteredNames[0])) {
+            $('#cpm').attr('data-percent', json.Completeness_Missing.toString().slice(0, 4));
+            if (json.Completeness_Missing.toString().slice(0, 4) < 0.85) {
+                $("#cm-title").css("color", "red");
+            }
+            else if (json.Completeness_Missing.toString().slice(0, 4) > 0.85) {
+                $("#cm-title").css("color", "green");
+            }
+            $('#cpm').cssCharts({type: "donut"}).trigger('show-donut-chart');
+            $('#cpm').attr('data-title', '%');
+            $('#cpm').parent().parent().attr('value', json.Completeness_Missing.toString().slice(0, 4));
 
-		
+            filteredNames = [];
+        }
+        else if(!json.hasOwnProperty(filteredNames[0])) {
+            $('#cmp').attr('data-percent',0);
+            $("#cm-title").css("color", "red");
+            //$("#cmpBox").css("padding-top","80px");
+            $('#cmp').cssCharts({type:"donut"}).trigger('show-donut-chart');
+            $('#cmp').parent().parent().attr('value',0);
+            filteredNames = [];
+
+            filteredNames = [];
+        }
 	    ////////////////////////////////////
 
 	    
 		// REGEX matching of completness frequency
 		var filteredNames = filtered_keys(json, /Completeness_Frequency/);
-		
 	   	if(json.hasOwnProperty(filteredNames[0])) {
-	   		var comp_freq = json[filteredNames[0]];
-	   		
-	   	}
-	  
-	    //var update = document.getElementById('#cf');
-	   // update.innerHTML = comp_freq;
-	    $('#cf').attr('data-percent',comp_freq.toString().slice(0,4));
-	    if(comp_freq.toString().slice(0,4)<0.7){
-		   			 $("#cf-title").css("color", "red");
-		   		}
-		else if(comp_freq.toString().slice(0,4)>0.7){
-		   			 $("#cf-title").css("color", "green");
-		   		}   		
-    	$('#cf').cssCharts({type:"donut"}).trigger('show-donut-chart');
-    	$('#cf').parent().parent().attr('value',comp_freq.toString().slice(0,4));    	
-	    filteredNames=[];
+            var comp_freq = json[filteredNames[0]];
+            //var update = document.getElementById('#cf');
+            // update.innerHTML = comp_freq;
+            $('#cf').attr('data-percent', comp_freq.toString().slice(0, 4));
+            if (comp_freq.toString().slice(0, 4) < 0.8) {
+                $("#cf-title").css("color", "red");
+            }
+            else if (comp_freq.toString().slice(0, 4) > 0.8) {
+                $("#cf-title").css("color", "green");
+            }
+            $('#cf').cssCharts({type: "donut"}).trigger('show-donut-chart');
+            $('#cf').parent().parent().attr('value', comp_freq.toString().slice(0, 4));
+            filteredNames = [];
+        }
+        else if(!json.hasOwnProperty(filteredNames[0])) {
+            $('#cf').attr('data-percent',0);
+            $("#cf-title").css("color", "red");
+            //$("#cfBox").css("padding-top","80px");
+            $('#cf').cssCharts({type:"donut"}).trigger('show-donut-chart');
+            $('#cf').parent().parent().attr('value',0);
+        }
+        filteredNames = [];
 	    ////////////////////////////////////
 
 
@@ -177,7 +193,7 @@ $( document ).ready(function(){
                 //var update = document.getElementById('accuracy-text');
                 //update.innerHTML += ""+filteredNames[i]+":"+json[filteredNames[i]]+"</br>";
                 static = json[filteredNames[0]];
-            }
+
         if(json.hasOwnProperty(filteredNames[1])) {
 				 dynamic = json[filteredNames[1]];
 
@@ -195,9 +211,16 @@ $( document ).ready(function(){
         }
         $('#acc').cssCharts({type:"donut"}).trigger('show-donut-chart');
         $('#acc').parent().parent().attr('value',accuracyVar.toString().slice(0,4));
+
+        }
+        else if(!json.hasOwnProperty(filteredNames[0])) {
+                $('#acc').attr('data-percent',0);
+                $("#accuracy-title").css("color", "red");
+                //$("#accuracyBox").css("padding-top","80px");
+                $('#acc').cssCharts({type:"donut"}).trigger('show-donut-chart');
+                $('#acc').parent().parent().attr('value',0);
+            }
         filteredNames=[];
-
-
         CanvasJS.addColorSet("greenShades",
             [//colorSet Array
                 "#da1212",
@@ -234,74 +257,82 @@ $( document ).ready(function(){
 		////////////////////////////////////
 	    
 		// VOLUME
-	   //filteredNames = filtered_keys(json, /Volume/);
-		
-		//for(var i =0; i<filteredNames.length;i++){
-			//if(json.hasOwnProperty(filteredNames[i])) {
-				
-		   		//var precisionToPrint = json[filteredNames[i]];
-		   		//var update = document.getElementById('volume-text');
-		   		//update.innerHTML += ""+filteredNames[i]+":"+json[filteredNames[i]]+"</br>";
-	   		//}
-		//}
-		
-		$('#v').attr('data-percent',json.Volume.toString().slice(0,4));
-		if(json.Volume.toString().slice(0,4)<0.7){
-		   			 $("#volume-title").css("color", "red");
-		   		}
-		else if(json.Volume.toString().slice(0,4)>0.7){
-		   			 $("#volume-title").css("color", "green");
-		   		}   		
-    	$('#v').cssCharts({type:"donut"}).trigger('show-donut-chart');
-    	$('#v').parent().parent().attr('value',json.Volume.toString().slice(0,4));  	
-	    filteredNames=[];
+        filteredNames = filtered_keys(json, /Volume/);
+        if(json.hasOwnProperty(filteredNames[0])) {
+                if (json.Volume != null) {
+                    $('#v').attr('data-percent', json.Volume.toString().slice(0, 4));
+                    if (json.Volume.toString().slice(0, 4) < 0.7) {
+                        $("#volume-title").css("color", "red");
+                    }
+                    else if (json.Volume.toString().slice(0, 4) > 0.7) {
+                        $("#volume-title").css("color", "green");
+                    }
+                    $('#v').cssCharts({type: "donut"}).trigger('show-donut-chart');
+                    $('#v').parent().parent().attr('value', json.Volume.toString().slice(0, 4));
+                    filteredNames = [];
+                }
+            }
+            else if(!json.hasOwnProperty(filteredNames[0])) {
+                $('#v').attr('data-percent', 0);
+                $("#volume-title").css("color", "red");
+                //$("#vBox").css("padding-top", "80px");
+                $('#v').cssCharts({type: "donut"}).trigger('show-donut-chart');
+                $('#v').parent().parent().attr('value', 0);
+            }
+        filteredNames = [];
 	    ////////////////////////////////////
 
 	     // REGEX matching of Precision
 	    filteredNames = filtered_keys(json, /Precision_/);
-		
-		for(var i =0; i<filteredNames.length;i++){
-			if(json.hasOwnProperty(filteredNames[i])) {
-
+			if(json.hasOwnProperty(filteredNames[0])) {
 		   		//var precisionToPrint = json[filteredNames[i]];
 		   		//var update = document.getElementById('precision-text');
 		   		//update.innerHTML += ""+filteredNames[i]+":"+json[filteredNames[i]]+"</br>";
-		   		$('#pr').attr('data-percent',json[filteredNames[i]].toString().slice(0,4));
-		   		if(json[filteredNames[i]].toString().slice(0,4)<0.6){
+		   		$('#pr').attr('data-percent',json[filteredNames[0]].toString().slice(0,4));
+		   		if(json[filteredNames[0]].toString().slice(0,4)<0.6){
 		   			 $("#precision-title").css("color", "red");
 		   		}
-		   		else if(json[filteredNames[i]].toString().slice(0,4)>0.6){
+		   		else if(json[filteredNames[0]].toString().slice(0,4)>0.6){
 		   			 $("#precision-title").css("color", "green");
 		   		}
     			$('#pr').cssCharts({type:"donut"}).trigger('show-donut-chart');
-    			$('#pr').parent().parent().attr('value',json[filteredNames[i]].toString().slice(0,4));  	
-     			
+    			$('#pr').parent().parent().attr('value',json[filteredNames[0]].toString().slice(0,4));
 	   		}
-		}
-	    filteredNames=[];
+             else if(!json.hasOwnProperty(filteredNames[0])) {
+                $('#pr').attr('data-percent',0);
+                $("#precision-title").css("color", "red");
+                //$("#precisionBox").css("padding-top","80px");
+                $('#pr').cssCharts({type:"donut"}).trigger('show-donut-chart');
+                $('#pr').parent().parent().attr('value',0);
+			}
+        filteredNames=[];
 	    ////////////////////////////////////
 
 
 	     // REGEX matching of Timeliness
 	    filteredNames = filtered_keys(json, /Timeliness_Mean/);
-		
-		for(var i =0; i<filteredNames.length;i++){
-			if(json.hasOwnProperty(filteredNames[i])) {
+			if(json.hasOwnProperty(filteredNames[0])) {
 		   		//var precisionToPrint = json[filteredNames[i]];
 		   		//var update = document.getElementById('timeliness-text');
 		   		//update.innerHTML += ""+filteredNames[i]+":"+json[filteredNames[i]]+"</br>";
-		   		$('#tm').attr('data-percent',json[filteredNames[i]].toString().slice(0,4));
-		   		if(json[filteredNames[i]].toString().slice(0,4)<0.3){
+		   		$('#tm').attr('data-percent',json[filteredNames[0]].toString().slice(0,4));
+		   		if(json[filteredNames[0]].toString().slice(0,4)<0.6){
 		   			 $("#timeliness-title").css("color", "red");
 		   		}
-		   		else if(json[filteredNames[i]].toString().slice(0,4)>0.3){
+		   		else if(json[filteredNames[0]].toString().slice(0,4)>0.6){
 		   			 $("#timeliness-title").css("color", "green");
 		   		}
     			$('#tm').cssCharts({type:"donut"}).trigger('show-donut-chart');
-    			$('#tm').parent().parent().attr('value',json[filteredNames[i]].toString().slice(0,4));  	
-    			
+    			$('#tm').parent().parent().attr('value',json[filteredNames[0]].toString().slice(0,4));
 	   		}
-		}
+            else if(json.hasOwnProperty(filteredNames[0])) {
+                $('#tm').attr('data-percent',0);
+                $("#timeliness-title").css("color", "red");
+                //$("#timelinessBox").css("padding-top","80px");
+                $('#tm').cssCharts({type:"donut"}).trigger('show-donut-chart');
+                $('#tm').parent().parent().attr('value',0);
+            }
+
 	    filteredNames=[];
 	    ////////////////////////////////////
 
@@ -309,16 +340,24 @@ $( document ).ready(function(){
 	    // DISTINCTNESS
 	    //var update = document.getElementById('distinctness-text');
 	    //update.innerHTML = json.Distinctness;
-	    $('#ds').attr('data-percent',json.Distinctness.toString().slice(0,4));
-	    if(json.Distinctness.toString().slice(0,4)<0.85){
-		   			 $("#distinctness-title").css("color", "red");
-		   		}
-		if(json.Distinctness.toString().slice(0,4)>0.85){
-		   			 $("#distinctness-title").css("color", "green");
-		   		}   		
-    	$('#ds').cssCharts({type:"donut"}).trigger('show-donut-chart');
-    	$('#ds').parent().parent().attr('value',json.Distinctness.toString().slice(0,4));  	
-    	
+        if(json.Distinctness != null) {
+            $('#ds').attr('data-percent', json.Distinctness.toString().slice(0, 4));
+            if (json.Distinctness.toString().slice(0, 4) < 0.85) {
+                $("#distinctness-title").css("color", "red");
+            }
+            if (json.Distinctness.toString().slice(0, 4) > 0.85) {
+                $("#distinctness-title").css("color", "green");
+            }
+            $('#ds').cssCharts({type: "donut"}).trigger('show-donut-chart');
+            $('#ds').parent().parent().attr('value', json.Distinctness.toString().slice(0, 4));
+        }
+        else if(json.Distinctness == null) {
+            $('#ds').attr('data-percent',0);
+            $("#distinctness-title").css("color", "red");
+            //$("#timelinessBox").css("padding-top","80px");
+            $('#ds').cssCharts({type:"donut"}).trigger('show-donut-chart');
+            $('#ds').parent().parent().attr('value',0);
+        }
 	    //////////////////////////////////// CONISTENCY set to zero because it can't be calculated on global level
 
         $('#cs').attr('data-percent',0);
@@ -399,15 +438,48 @@ $( document ).ready(function(){
             console.log(atr+dim);
             $("#go").attr("href", "valueGranularity.html");
         }
-
-
     });
 
-    //ON HOVER
-    //$("#consistencyBox").hover(function () {
+//call to server side to get dimensions scores over attributes available
+    $.ajax({
+        type:'get',
+        url: "/getListOfDimensions?firstFolder=public/dataSources/"+source+"/DQAssessment_results",
+        async:false
 
-   // })
-    
+    }).done(function ( info ) {
+        info = JSON.stringify(info);
+        info = JSON.parse(info);
+        var dimensions = info;
+        for(var i in dimensions){
+            dimensionsOverAttribute.push(dimensions[i]);
+            console.log(dimensionsOverAttribute);
+        }
+    });
+
+    var dimL = document.getElementById('dropDimension');
+    for(var i in dimensionsOverAttribute){
+        dimL.innerHTML +="<li class='"+dimensionsOverAttribute[i]+ "' id='dimensionListOverAttribute'>"+dimensionsOverAttribute[i]+"</li>";
+
+    }
+    var selectedDimensionOverAttribute;
+    $("li#dimensionListOverAttribute").click(function(){
+        selectedDimensionOverAttribute=($(this).attr("class"));
+        var update = document.getElementById("dimensionButton1");
+        update.innerHTML = ($(this).attr("class"))+"<span class='caret'></span>";
+        var dim = document.getElementById("dimensionButton1").textContent;
+        if(dim !="Dimension") {
+            $("#go-attribute").attr("href", "attributeGranularity.html");
+        }
+    });
+
+    //GO for direct link to attribute granularity
+
+    $("#go-attribute").click(function(){
+        dimensionName = document.getElementById("dimensionButton1").textContent;
+        localStorage.setItem('dimension', dimensionName);
+        localStorage.setItem('dimensionName',dimensionName);
+        localStorage.setItem('source', source);
+    });
     
     //GO for direct link to value granularity
 

@@ -1,10 +1,7 @@
  
 function detailObject(arrOfValues,attributeOfAggregation,source){
-    console.log(source);
     this.url = "/set?firstFolder=public/dataSources/"+source+"/DQAssessment_results&attributeOfAggregation="+attributeOfAggregation;
-
-    this.array = JSON.stringify([arrOfValues]);
-    
+    this.array = JSON.stringify(arrOfValues);
   //Methods
 
    this.getDetailed = function(){

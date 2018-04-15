@@ -170,6 +170,15 @@ $( document ).ready(function(){
                             tabCell.style = "background:green";
                         }
                 }
+                if(dimension=="population") {
+
+                    if (jsonFile[i].CompletenessPopulationValue<1.0){
+                        tabCell.style = "background:red";
+                    }
+                    else{
+                        tabCell.style = "background:green";
+                    }
+                }
 
                 if(dimension=="precision") {
 

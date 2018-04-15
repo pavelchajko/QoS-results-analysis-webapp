@@ -1,20 +1,18 @@
 var jsonFile;
+var arrayOfValues = JSON.parse(localStorage["arrayOfValues"]);
+var attributeOfAggregation = localStorage.getItem('attributeOfAggregation');
+var dimensionName = localStorage.getItem('dimensionName');
+var source = localStorage.getItem('source');
+//console.log(dimensionName+source+attributeOfAggregation);
 $( document ).ready(function(){
-	var arrayOfValues = localStorage.getItem('arrayOfValues');
-  var attributeOfAggregation = localStorage.getItem('attributeOfAggregation');
-  var dimensionName = localStorage.getItem('dimensionName');
-  var source = localStorage.getItem('source');
   var update = document.getElementById("attributeOfAggregation");
   update.innerHTML+=attributeOfAggregation;
-
-	 var size = JSON.stringify(arrayOfValues);
-	 size = [arrayOfValues];
-	 size = size[0].substring(0);
-	size = size.split(",");
-	size = size.length;
- 
+	 //size = size[0].substring(0);
+    //size = size[0];
+	 //size = size.split(",");
+	 var size = arrayOfValues.length;
 	var detailedObject = new detailObject(arrayOfValues,attributeOfAggregation,source);
-  var jsonObject = detailedObject.getDetailed();
+    var jsonObject = detailedObject.getDetailed();
       
     var GlobalAccuracyDynamic=0.0,GlobalAccuracyStatic=0.0,GlobalCompletenessFrequency=0.0,
     GlobalCompletenessMissing=0.0,GlobalConsistency=0.0,GlobalPrecision=0.0,GlobalVolume=0.0; GlobalTimeliness=0.0;
@@ -48,26 +46,26 @@ $( document ).ready(function(){
    
 
    var update = document.getElementById("accuracy-body");
-   update.innerHTML += "<p>Accuracy Static: "+GlobalAccuracyStatic/size+"</p>";
-   update.innerHTML += "<p>Accuracy Dynamic: "+GlobalAccuracyDynamic/size+"</p>";
+   update.innerHTML += "<p>Accuracy Static: "+(GlobalAccuracyStatic/size).toFixed(2)+"</p>";
+   update.innerHTML += "<p>Accuracy Dynamic: "+(GlobalAccuracyDynamic/size).toFixed(2)+"</p>";
 
    var update = document.getElementById("completenessFrequency-body");
-   update.innerHTML += "<p>Value: "+GlobalCompletenessFrequency/size+"</p>";
+   update.innerHTML += "<p>Value: "+(GlobalCompletenessFrequency/size).toFixed(2)+"</p>";
 
    var update = document.getElementById("completenessMissing-body");
-   update.innerHTML += "<p>Value: "+GlobalCompletenessMissing/size+"</p>";
+   update.innerHTML += "<p>Value: "+(GlobalCompletenessMissing/size).toFixed(2)+"</p>";
 
    var update = document.getElementById("consistency-body");
-   update.innerHTML += "<p>Value: "+GlobalConsistency/size/2+"</p>";
+   update.innerHTML += "<p>Value: "+(GlobalConsistency/size/2).toFixed(2)+"</p>";
 
    var update = document.getElementById("precision-body");
-   update.innerHTML += "<p>Value: "+GlobalPrecision/size+"</p>";
+   update.innerHTML += "<p>Value: "+(GlobalPrecision/size).toFixed(2)+"</p>";
 
    var update = document.getElementById("volume-body");
-   update.innerHTML += "<p>Value: "+GlobalVolume/size+"</p>";
+   update.innerHTML += "<p>Value: "+(GlobalVolume/size).toFixed(2)+"</p>";
 
     var update = document.getElementById("timeliness-body");
-   update.innerHTML += "<p>Value: "+GlobalTimeliness/size+"</p>";
+   update.innerHTML += "<p>Value: "+(GlobalTimeliness/size).toFixed(2)+"</p>";
 
 
    $.ajax({
@@ -122,41 +120,41 @@ $( document ).ready(function(){
   if(accuracy!=""){
     var update = document.getElementById("accuracy-body1");
 
-     update.innerHTML += "<p>Accuracy Static: "+accuracy[0].AccuracyStatic+"</p>";
-     update.innerHTML += "<p>Accuracy Dynamic: "+accuracy[0].AccuracyDynamic+"</p>";
+     update.innerHTML += "<p>Accuracy Static: "+accuracy[0].AccuracyStatic.toFixed(2)+"</p>";
+     update.innerHTML += "<p>Accuracy Dynamic: "+accuracy[0].AccuracyDynamic.toFixed(2)+"</p>";
    }
    if(compFreq!=""){
     var update = document.getElementById("completenessFrequency-body1");
-    update.innerHTML += "<p>Value: "+compFreq[0].CompletenessFrequencyValue+"</p>";
+    update.innerHTML += "<p>Value: "+compFreq[0].CompletenessFrequencyValue.toFixed(2)+"</p>";
    }
    if(compMiss!=""){
     var update = document.getElementById("completenessMissing-body1");
-    update.innerHTML += "<p>Value: "+compMiss[0].CompletenessMissingValue+"</p>";
+    update.innerHTML += "<p>Value: "+compMiss[0].CompletenessMissingValue.toFixed(2)+"</p>";
    }
    //make a change of consistency so it takes into account if more are present
    if(consistency!=""){
     var update = document.getElementById("consistency-body1");
-    update.innerHTML += "<p>Value:"+consistency[0].ConsistencyValue+"RuleAnt:"+consistency[0].RuleAntecedent+"</br>RuleCon:"+consistency[0].RuleConsequent;
+    update.innerHTML += "<p>Value:"+consistency[0].ConsistencyValue.toFixed(2)+"RuleAnt:"+consistency[0].RuleAntecedent+"</br>RuleCon:"+consistency[0].RuleConsequent;
       if(consistency.length>1){
-       update.innerHTML +="</br>"+"Value:"+consistency[1].ConsistencyValue+"RuleAnt:"+consistency[1].RuleAntecedent+"RuleConsq:"+consistency[1].RuleConsequent+"</p>";
+       update.innerHTML +="</br>"+"Value:"+consistency[1].ConsistencyValue.toFixed(2)+"RuleAnt:"+consistency[1].RuleAntecedent+"RuleConsq:"+consistency[1].RuleConsequent+"</p>";
 
       }
       if(consistency.length>2){
-       update.innerHTML +="</br>"+"Value:"+consistency[2].ConsistencyValue+"RuleAnt:"+consistency[2].RuleAntecedent+"RuleConsq:"+consistency[2].RuleConsequent+"</p>";
+       update.innerHTML +="</br>"+"Value:"+consistency[2].ConsistencyValue.toFixed(2)+"RuleAnt:"+consistency[2].RuleAntecedent+"RuleConsq:"+consistency[2].RuleConsequent+"</p>";
 
       }
       if(consistency.length>3){
-       update.innerHTML +="</br>"+"Value:"+consistency[3].ConsistencyValue+"RuleAnt:"+consistency[3].RuleAntecedent+"RuleConsq:"+consistency[3].RuleConsequent+"</p>";
+       update.innerHTML +="</br>"+"Value:"+consistency[3].ConsistencyValue.toFixed(2)+"RuleAnt:"+consistency[3].RuleAntecedent+"RuleConsq:"+consistency[3].RuleConsequent+"</p>";
 
       }
    }
    if(precision!=""){
     var update = document.getElementById("precision-body1");
-    update.innerHTML += "<p>Value: "+precision[0].Precision+"</p>";
+    update.innerHTML += "<p>Value: "+precision[0].Precision.toFixed(2)+"</p>";
    }
    if(timeliness!=""){
     var update = document.getElementById("timeliness-body1");
-    update.innerHTML += "<p>Mean: "+timeliness[0].TimelinessMean+"</br>Min:"+timeliness[0].TimelinessMin+"</br>Max:"+timeliness[0].TimelinessMax+"</p>";
+    update.innerHTML += "<p>Mean: "+timeliness[0].TimelinessMean.toFixed(2)+"</br>Min:"+timeliness[0].TimelinessMin+"</br>Max:"+timeliness[0].TimelinessMax.toFixed(2)+"</p>";
    }
    if(dist!=""){
     var update = document.getElementById("dist-body1");
@@ -164,7 +162,7 @@ $( document ).ready(function(){
    }
    if(compPop!=""){
     var update = document.getElementById("compPop-body1");
-    update.innerHTML += "<p>DistincCount: "+compPop[0].DistinctCount+"</br>Compl.Pop:"+compPop[0].CompletenessPopulationValue+"</p>";
+    update.innerHTML += "<p>DistincCount: "+compPop[0].DistinctCount+"</br>Compl.Pop:"+compPop[0].CompletenessPopulationValue.toFixed(2)+"</p>";
    }
    
  

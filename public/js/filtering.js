@@ -1,7 +1,7 @@
 $( document ).ready(function(){
     var source = localStorage.getItem('source');
     var attributes;
-    var filterArr = [2,2,2,2,2,2,2];
+    var filterArr = [2,2,2,2,2,2,2,2,2,2,2];
     $.ajax({
         type:'get',
         url: "/getAttributes?firstFolder=public/dataSources/"+source+"/DQAssessment_results",
@@ -33,7 +33,8 @@ $( document ).ready(function(){
     step: 0.01,
     value: [0.75,1],
     rangeHighlights: [{ "start": 0, "end": 0.3, "class": "category1" },
-                      { "start": 0.75, "end": 1, "class": "category2" }
+                      { "start": 0.75, "end": 1, "class": "category2" },
+                        { "start": 0.3, "end": 0.75, "class": "category3" }
                      ]}); 
 
     var volume = $("input.volume").slider({
@@ -53,17 +54,40 @@ $( document ).ready(function(){
     step: 0.0001,
     value: [0.7,1],
     rangeHighlights: [{ "start": 0, "end": 0.2, "class": "category1" },
-                      { "start": 0.7, "end": 1, "class": "category2" }
-                     ]}); 
+                      { "start": 0.7, "end": 1, "class": "category2" },
+                        { "start": 0.2, "end": 0.7, "class": "category3" }
 
-      var complMiss = $("input.complMiss").slider({
+    ]});
+    var timeliness = $("input.timeliness").slider({
+        id: 'sliderTimeliness',
+        min: 0,
+        max: 1,
+        step: 0.0001,
+        value: [0.6,1],
+        rangeHighlights: [{ "start": 0, "end": 0.2, "class": "category1" },
+            { "start": 0.6, "end": 1, "class": "category2" },
+            { "start": 0.2, "end": 0.6, "class": "category3" }
+        ]});
+
+    var precision = $("input.precision").slider({
+        id: 'sliderPrecision',
+        min: 0,
+        max: 1,
+        step: 0.0001,
+        value: [0.6,1],
+        rangeHighlights: [{ "start": 0, "end": 0.2, "class": "category1" },
+            { "start": 0.6, "end": 1, "class": "category2" },
+            { "start": 0.2, "end": 0.6, "class": "category3" }
+        ]});
+
+    var complMiss = $("input.complMiss").slider({
     id: 'sliderMiss',
     min: 0,
     max: 1,
-    step: 1,
+    step: 0.0001,
     value: 1,
-    rangeHighlights: [{ "start": 0, "end": 0, "class": "category1" },
-                      { "start": 1, "end": 1, "class": "category2" }
+    rangeHighlights: [{ "start": 0, "end": 0.95, "class": "category1" },
+                      { "start": 0.95, "end":1, "class": "category2" }
                      ]}); 
 
 
@@ -91,8 +115,18 @@ $( document ).ready(function(){
         filterArr[5] = rangeValue[0];
         filterArr[6] = rangeValue[1];
       }
-
-        localStorage.setItem('filterArr',filterArr);  
+       if($(".ckb-timeliness").is(':checked')){
+           var rangeValue = timeliness.slider('getValue');
+           filterArr[7] = rangeValue[0];
+           filterArr[8] = rangeValue[1];
+       }
+       if($(".ckb-precision").is(':checked')){
+           var rangeValue = precision.slider('getValue');
+           filterArr[9] = rangeValue[0];
+           filterArr[10] = rangeValue[1];
+       }
+       localStorage["filterArr"] = JSON.stringify(filterArr);
+        //localStorage.setItem('filterArr',filterArr);
         localStorage.setItem('selectedAtr',selectedAtr);
         localStorage.setItem('source',source);
 

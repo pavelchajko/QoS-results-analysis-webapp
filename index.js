@@ -3,6 +3,7 @@ var app = express();
 var fs = require("fs");
 var path = require("path");
 url = require('url');
+const util = require('util');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({limit: '50mb'}));
 
@@ -23,6 +24,30 @@ app.get('/getSources', function(req,res){
     }
     else{
         res.send("sources not present!!");
+    }
+
+});
+
+app.get('/getListOfDimensions', function(req,res){
+
+    var url_parts = url.parse(req.url,true);
+    let directory = url_parts.query.firstFolder;
+    var arr = [];
+    var index = -1;
+    let folders = fs.readdirSync(directory);
+    for(var i in folders){
+        if(folders[i].includes("_attributes")){
+            arr.push(folders[i].substring(0,folders[i].indexOf("_attributes")));
+
+        }
+        //
+        index = 1;
+    }
+    if(index!=-1){
+        res.send(arr);
+    }
+    else{
+        res.send("folders not present!!");
     }
 
 });
@@ -64,19 +89,18 @@ app.get('/directLink', function(req,res){
      var compFreqArr = [];
      var consArr = [];
      var volArr = [];
-     
-
-     var finalResult = {"compMissArr" :[], "compFreqArr":[], "volArr":[], "consArr":[]};
+     var timelinessArr = [];
+	 var precisionArr = [];
+     var finalResult = {"compMissArr" :[], "compFreqArr":[], "volArr":[], "consArr":[], "timelinessArr":[], "precisionArr":[]};
 
      valuesArray = valuesArray.split(",").map(Number);
-     
      let firstFolders = fs.readdirSync(directory);
      var index = -1;
      var att=-1;
      var minL = 300;
     
      for(var i in firstFolders){
-     	if( (firstFolders[i].includes("values")) && (!firstFolders[i].includes("precision")) && (!firstFolders[i].includes("accuracy")) && (!firstFolders[i].includes("timeliness")) ){
+     	if( (firstFolders[i].includes("values"))  && (!firstFolders[i].includes("accuracy")) ){
      		valuesFolder.push(firstFolders[i]);
      	}
 
@@ -178,10 +202,7 @@ app.get('/directLink', function(req,res){
 
 				
 		}
-     	
 
-     
-     	
      	if(valuesFolder[i].includes("consistency") && valuesArray[5]!=2 && valuesArray[6]!=2 ){
      		var current = directory+"/"+valuesFolder[i];
 			let currentFolder = fs.readdirSync(current);
@@ -284,20 +305,102 @@ app.get('/directLink', function(req,res){
 		
 		}
 
+		if(valuesFolder[i].includes("timeliness") && valuesArray[7]!=2  && valuesArray[8]!=2){
+             var current = directory+"/"+valuesFolder[i];
+             let currentFolder = fs.readdirSync(current);
+
+             for(var j in currentFolder){
+                 if(currentFolder[j].includes(attribute)){
+                     arr.push(currentFolder[j]);
+                 }
+             }
+             for(var j in arr){
+                 if((arr[j].length)<minL){
+                     minL = arr[j].length;
+                     att =j;
+                 }
+             }
 
 
 
 
+             index = -1;
+             let thirdFolder = fs.readdirSync(current+"/"+arr[att]);
+             for(var k in thirdFolder) {
+                 if(path.extname(thirdFolder[k]) === ".json") {
+                     index = k;
 
+                 }
+
+             }
+
+             let jsonFile = current+"/"+arr[att]+"/"+thirdFolder[index];
+             let rawdata = fs.readFileSync(jsonFile,'utf-8');
+             let str = rawdata.replace(/\n/g, ",");
+             str = str.slice(0,-1);
+             let fileToJson = '['+ str.replace(/}{/g, '},{') + ']';
+             fileToJson = JSON.parse(fileToJson);
+
+             for(var q in fileToJson){
+
+
+                 if( (fileToJson[q].TimelinessMean >= valuesArray[7]) && (fileToJson[q].TimelinessMean <= valuesArray[8]) ){
+                     timelinessArr.push(fileToJson[q]);
+                 }
+
+             }
+
+
+         }
+
+         if(valuesFolder[i].includes("precision") && valuesArray[9]!=2  && valuesArray[10]!=2){
+             var current = directory+"/"+valuesFolder[i];
+             let currentFolder = fs.readdirSync(current);
+
+             for(var j in currentFolder){
+                 if(currentFolder[j].includes(attribute)){
+                     arr.push(currentFolder[j]);
+                 }
+             }
+             for(var j in arr){
+                 if((arr[j].length)<minL){
+                     minL = arr[j].length;
+                     att =j;
+                 }
+             }
+             index = -1;
+             let thirdFolder = fs.readdirSync(current+"/"+arr[att]);
+             for(var k in thirdFolder) {
+                 if(path.extname(thirdFolder[k]) === ".json") {
+                     index = k;
+
+                 }
+
+             }
+             let jsonFile = current+"/"+arr[att]+"/"+thirdFolder[index];
+             let rawdata = fs.readFileSync(jsonFile,'utf-8');
+             let str = rawdata.replace(/\n/g, ",");
+             str = str.slice(0,-1);
+             let fileToJson = '['+ str.replace(/}{/g, '},{') + ']';
+             fileToJson = JSON.parse(fileToJson);
+
+             for(var q in fileToJson){
+                 if( (fileToJson[q].Precision >= valuesArray[9]) && (fileToJson[q].Precision <= valuesArray[10]) ){
+                     precisionArr.push(fileToJson[q]);
+
+                 }
+             }
+
+
+         }
      }
 
     finalResult.compMissArr = JSON.stringify(compMissArr);
     finalResult.compFreqArr = JSON.stringify(compFreqArr);
     finalResult.volArr = JSON.stringify(volArr);
     finalResult.consArr = JSON.stringify(consArr);
-
-
-	
+    finalResult.timelinessArr = JSON.stringify(timelinessArr);
+    finalResult.precisionArr = JSON.stringify(precisionArr);
 	//finalResult = JSON.stringify(finalResult);
 	//finalResult = JSON.parse(finalResult);
      res.send(finalResult);
@@ -405,8 +508,50 @@ app.get('/attribute', function(req,res){
 		 let str = rawdata.replace(/\n/g, ",");
 		 str = str.slice(0,-1);
 		 let fileToJson = '['+ str.replace(/}{/g, '},{') + ']';
-		 //fileToJson = JSON.parse(fileToJson);
-
+		 fileToJson = JSON.parse(fileToJson);
+		 if(dimension == "precision"){
+		 	for(var i in fileToJson){
+		 		fileToJson[i].Precision = fileToJson[i].Precision.toFixed(2);
+			}
+		 }
+         if(dimension == "completeness_frequency"){
+             for(var i in fileToJson){
+                 fileToJson[i].CompletenessFrequencyValue = fileToJson[i].CompletenessFrequencyValue.toFixed(2);
+             }
+         }
+         if(dimension == "completeness_missing"){
+             for(var i in fileToJson){
+                 fileToJson[i].CompletenessMissingValue = fileToJson[i].CompletenessMissingValue.toFixed(2);
+             }
+         }
+         if(dimension == "accuracy"){
+             for(var i in fileToJson){
+                 fileToJson[i].AccuracyDynamic = (fileToJson[i].AccuracyDynamic*100).toFixed(2);
+                 fileToJson[i].AccuracyStatic = (fileToJson[i].AccuracyStatic*100).toFixed(2);
+             }
+         }
+         if(dimension == "timeliness"){
+             for(var i in fileToJson){
+                 fileToJson[i].TimelinessMean = (fileToJson[i].TimelinessMean).toFixed(2);
+                 fileToJson[i].TimelinessMax = (fileToJson[i].TimelinessMax).toFixed(2);
+                 fileToJson[i].TimelinessMin = (fileToJson[i].TimelinessMin).toFixed(2);
+             }
+         }
+         if(dimension == "distinctness"){
+             for(var i in fileToJson){
+                 fileToJson[i].Distinctness = (fileToJson[i].Distinctness).toFixed(2);
+             }
+         }
+         if(dimension == "consistency"){
+             for(var i in fileToJson){
+                 fileToJson[i].ConsistencyValue = (fileToJson[i].ConsistencyValue).toFixed(2);
+             }
+         }
+         if(dimension == "completeness_population"){
+             for(var i in fileToJson){
+                 fileToJson[i].CompletenessPopulationValue = (fileToJson[i].CompletenessPopulationValue).toFixed(2);
+             }
+         }
 		  res.send(fileToJson);
 	  } 
 
@@ -426,12 +571,11 @@ app.get('/value', function(req,res){
 	 var url_parts = url.parse(req.url,true);
      let firstFolder = url_parts.query.firstFolder;
      let dimension = url_parts.query.dimension;
-     let attributeOfAggregation = url_parts.query.attribute; 
-     
+     let attributeOfAggregation = url_parts.query.attribute;
 	 let files = fs.readdirSync(firstFolder);
 	 var index = -1;
 	 for(var i in files) {
-	 	if(files[i].includes(dimension.substring(0, dimension.length - 1)+"_values")){
+	 	if(files[i].includes(dimension+"_values")){
 	 		index = i;
 	 		}
 	 	
@@ -473,19 +617,63 @@ app.get('/value', function(req,res){
 				   	
 				 }
 
-				
+         let file = finalUrl+"/"+jsonFolder+"/"+thirdFolder[index];
+
+         let rawdata = fs.readFileSync(file,'utf-8');
+
+         let str = rawdata.replace(/\n/g, ",");
+         str = str.slice(0,-1);
+         let fileToJson = '['+ str.replace(/}{/g, '},{') + ']';
+         fileToJson = JSON.parse(fileToJson);
+             if (dimension == "precision") {
+             	console.log(fileToJson[i]);
+                 for (var i in fileToJson) {
+                     fileToJson[i].Precision = fileToJson[i].Precision.toFixed(2);
+                 }
+             }
+             if (dimension == "completeness_frequency") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].CompletenessFrequencyValue = fileToJson[i].CompletenessFrequencyValue.toFixed(2);
+                 }
+             }
+             if (dimension == "completeness_missing") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].CompletenessMissingValue = fileToJson[i].CompletenessMissingValue.toFixed(2);
+                 }
+             }
+             if (dimension == "accuracy") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].AccuracyDynamic = (fileToJson[i].AccuracyDynamic * 100).toFixed(2);
+                     fileToJson[i].AccuracyStatic = (fileToJson[i].AccuracyStatic * 100).toFixed(2);
+                 }
+             }
+             if (dimension == "timeliness") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].TimelinessMean = (fileToJson[i].TimelinessMean).toFixed(2);
+                     fileToJson[i].TimelinessMax = (fileToJson[i].TimelinessMax).toFixed(2);
+                     fileToJson[i].TimelinessMin = (fileToJson[i].TimelinessMin).toFixed(2);
+                 }
+             }
+             if (dimension == "distinctness") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].Distinctness = (fileToJson[i].Distinctness).toFixed(2);
+                 }
+             }
+             if (dimension == "consistency") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].ConsistencyValue = (fileToJson[i].ConsistencyValue).toFixed(2);
+                 }
+             }
+             if (dimension == "completeness_population") {
+                 for (var i in fileToJson) {
+                     fileToJson[i].CompletenessPopulationValue = (fileToJson[i].CompletenessPopulationValue).toFixed(2);
+                 }
+             }
+
+         res.send(fileToJson);
 
 
-				 let file = finalUrl+"/"+jsonFolder+"/"+thirdFolder[index];
 
-				 let rawdata = fs.readFileSync(file,'utf-8');  
-				 
-				 let str = rawdata.replace(/\n/g, ",");
-				 str = str.slice(0,-1);
-				 let fileToJson = '['+ str.replace(/}{/g, '},{') + ']';
-				 //fileToJson = JSON.parse(fileToJson);
-				 
-				  res.send(fileToJson);
 	  } 
 
 	 else{
@@ -673,7 +861,7 @@ app.get('/custom', function(req,res){
 
   }//if dimension is dimension ends here
 
-	
+	console.log(finalResult);
 
 	res.send(finalResult);	
 
@@ -686,12 +874,12 @@ app.post('/set',function(req,res){
     let attributeOfAggregation = url_parts.query.attributeOfAggregation;
 
 	var data = req.body;
-	data = data[0].substring(0);
-	data = data.split(",");
-	
-
+	//data = data[0].substring(0);
+	//data = data.split(",");
+    //console.log(data);
 	valuesFolders = [];
 	finalResult = [];
+	testArr = [];
 	let files = fs.readdirSync(Folder);
 	for(var i in files) {
 		   	if(files[i].includes("_values")) {
@@ -703,42 +891,43 @@ app.post('/set',function(req,res){
 	for(var i in valuesFolders){
 			var current = Folder+"/"+valuesFolders[i];
 			let currentFolder = fs.readdirSync(current);
-			
 			for(var j in currentFolder){
+                if(currentFolder[j].includes(attributeOfAggregation)) {
+                	//console.log(currentFolder[j]);
+                    index = -1;
+                        let thirdFolder = fs.readdirSync(current + "/" + currentFolder[j]);
+                        for (var k in thirdFolder) {
+                            if (path.extname(thirdFolder[k]) === ".json") {
+                                index = k;
 
-					
-						index = -1;
-						let thirdFolder = fs.readdirSync(current+"/"+currentFolder[j]);
-							     for(var k in thirdFolder) {
-								   	if(path.extname(thirdFolder[k]) === ".json") {
-								       index = k;
+                            }
 
-								   	}
-								   	
-								 }
+                        }
 
-						 let jsonFile = current+"/"+currentFolder[j]+"/"+thirdFolder[index];
-						 let rawdata = fs.readFileSync(jsonFile,'utf-8'); 
-						 let str = rawdata.replace(/\n/g, ",");
-						 str = str.slice(0,-1);
-						 let fileToJson = '['+ str.replace(/}{/g, '},{') + ']';
-						 fileToJson = JSON.parse(fileToJson);
-								
-						for(var q in fileToJson){
-						 for(var x in data){
-						 	 
-					   		 if(fileToJson[q].AntecedentValue == data[x] || fileToJson[q].Value == data[x]){
-							 finalResult.push(fileToJson[q]);
-							 }
-						 }
-					   }
+                        let jsonFile = current + "/" + currentFolder[j] + "/" + thirdFolder[index];
+                        let rawdata = fs.readFileSync(jsonFile, 'utf-8');
+                        let str = rawdata.replace(/\n/g, ",");
+                        str = str.slice(0, -1);
+                        let fileToJson = '[' + str.replace(/}{/g, '},{') + ']';
+                        fileToJson = JSON.parse(fileToJson);
 
+                    for (var x in data) {
+                        for (var q in fileToJson) {
+
+
+                                if (fileToJson[q].AntecedentValue == data[x] || fileToJson[q].Value == data[x]) {
+                                    //console.log(fileToJson[q]);
+                                    finalResult.push(fileToJson[q]);
+                                }
+                            }
+                        }
+
+                }
 
 
 			}
 
   	}
-    
   	res.send(finalResult);
 
 	
