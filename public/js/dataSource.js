@@ -22,7 +22,7 @@ $( document ).ready(function(){
     var thisUL = document.getElementById('dropMenu');
     for(var i = 0; i < arr.length; i++) {
         var link = document.createElement('a');
-        link.setAttribute('href', 'homepage.html');
+        link.setAttribute('href', 'about.html');
         link.appendChild(document.createTextNode(arr[i]));
         var thisLI = document.createElement('li');
         thisLI.appendChild(link);

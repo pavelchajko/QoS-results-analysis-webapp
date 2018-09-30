@@ -452,7 +452,6 @@ $( document ).ready(function(){
         var dimensions = info;
         for(var i in dimensions){
             dimensionsOverAttribute.push(dimensions[i]);
-            console.log(dimensionsOverAttribute);
         }
     });
 

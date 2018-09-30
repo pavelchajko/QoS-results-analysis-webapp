@@ -354,7 +354,7 @@ figure {
   -o-transition: 0.5s;
   transition: 0.5s;
 }
-#volumeDiv,#completenessMissingDiv,#completenessFrequencyDiv,#consistencyDiv{
+#volumeDiv,#completenessMissingDiv,#completenessFrequencyDiv,#consistencyDiv,#timelinessDiv,#precisionDiv{
   width:40%;
 }
 

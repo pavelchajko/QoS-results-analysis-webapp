@@ -99,7 +99,13 @@ $( document ).ready(function(){
             finalArr=intersect_safe(tempArr,arr2[5]);
         }
 
-    console.log(finalArr);
+    var update = document.getElementById("intersect");
+    if(finalArr.length>0){
+            update.innerHTML +="The values in common are:"+finalArr+"";
+    }
+    else{
+        update.innerHTML +="No values in common";
+    }
 
     function intersect_safe(a, b)
     {

@@ -1,0 +1,3 @@
+{"RuleAntecedent":"CODLINHA","RuleConsequent":"NOMELINHA","ConsistencyValue":0.9932090590270289,"Confidence":1.0}
+{"RuleAntecedent":"CODLINHA,CODVEICULO","RuleConsequent":"NUMEROCARTAO","ConsistencyValue":0.022312297327887646,"Confidence":1.0}
+{"RuleAntecedent":"CODLINHA","RuleConsequent":"CODVEICULO","ConsistencyValue":0.38657435249873573,"Confidence":1.0}
